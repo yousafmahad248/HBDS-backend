@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, registerHospital, login, getMe, updateProfile, forgotPassword, verifyOTP, resetPassword } = require('../controllers/authController');
+const { registerUser, registerHospital, login, getMe, updateProfile, forgotPassword, verifyOTP, resetPassword, savePushToken } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
 router.post('/register-user', registerUser);
@@ -8,6 +8,7 @@ router.post('/register-hospital', registerHospital);
 router.post('/login', login);
 router.get('/me', protect, getMe);
 router.put('/profile', protect, updateProfile);
+router.post('/push-token', protect, savePushToken);
 
 // Password Reset Routes
 router.post('/forgot-password', forgotPassword);

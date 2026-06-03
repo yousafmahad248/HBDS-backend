@@ -381,3 +381,23 @@ exports.getDonorBloodReport = async (req, res) => {
         res.status(500).json({ msg: 'Server error', error: error.message });
     }
 };
+
+exports.savePushToken = async (req, res) => {
+    try {
+        const { token } = req.body;
+        const userId = req.user.id;
+        const role = req.user.role;
+
+        if (!token) return res.status(400).json({ msg: 'Token is required' });
+
+        if (role === 'hospital') {
+            await Hospital.findByIdAndUpdate(userId, { expoPushToken: token });
+        } else {
+            await User.findByIdAndUpdate(userId, { expoPushToken: token });
+        }
+
+        res.status(200).json({ msg: 'Push token saved successfully' });
+    } catch (error) {
+        res.status(500).json({ msg: 'Server error', error: error.message });
+    }
+};

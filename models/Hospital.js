@@ -12,6 +12,7 @@ const hospitalSchema = new mongoose.Schema({
   profilePicture: { type: String },
   resetPasswordOTP: { type: String },
   resetPasswordExpires: { type: Date },
+  expoPushToken: { type: String },
   // GeoJSON for high-performance location searches
   locationPoint: {
     type: { type: String, enum: ['Point'], default: 'Point' },

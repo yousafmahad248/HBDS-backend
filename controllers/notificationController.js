@@ -1,4 +1,6 @@
 const Notification = require('../models/Notification');
+const mongoose = require('mongoose');
+const axios = require('axios');
 
 // Get all notifications for the logged-in user/hospital
 exports.getNotifications = async (req, res) => {
@@ -70,6 +72,24 @@ exports.createNotification = async (data) => {
     // Emit real-time notification if socket io is available
     if (global.io) {
       global.io.to(data.recipient.toString()).emit('new_notification', notification);
+    }
+
+    // Send Expo Push Notification
+    try {
+      const RecipientModel = mongoose.model(data.recipientModel);
+      const recipientUser = await RecipientModel.findById(data.recipient);
+
+      if (recipientUser && recipientUser.expoPushToken) {
+        await axios.post('https://exp.host/--/api/v2/push/send', {
+          to: recipientUser.expoPushToken,
+          sound: 'default',
+          title: data.title,
+          body: data.message,
+          data: { notificationId: notification._id, type: data.type },
+        });
+      }
+    } catch (pushError) {
+      console.error('Error sending Expo push notification:', pushError.message);
     }
 
     return notification;
