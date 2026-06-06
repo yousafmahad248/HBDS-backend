@@ -189,7 +189,14 @@ exports.acceptRequest = async (req, res) => {
                             title: 'Blood Request Accepted',
                             message: `A donor named ${acceptorDonor.name} has accepted your request for ${request.bloodGroup} blood.`,
                             type: 'REQUEST_ACCEPTED',
-                            relatedId: request._id
+                            relatedId: request._id,
+                            donorDetails: {
+                                name: acceptorDonor.name,
+                                phone: acceptorDonor.phone || '',
+                                email: acceptorDonor.email,
+                                location: acceptorDonor.location || '',
+                                bloodReport: acceptorDonor.bloodReport || ''
+                            }
                         }).catch(err => console.error('Notification error:', err));
                     }
                 }

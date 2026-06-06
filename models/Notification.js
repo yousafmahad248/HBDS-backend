@@ -19,7 +19,14 @@ const notificationSchema = new mongoose.Schema({
     required: true 
   },
   relatedId: { type: mongoose.Schema.Types.ObjectId }, // e.g. BloodRequest ID
-  isRead: { type: Boolean, default: false }
+  isRead: { type: Boolean, default: false },
+  donorDetails: {
+    name: { type: String },
+    phone: { type: String },
+    email: { type: String },
+    location: { type: String },
+    bloodReport: { type: String }
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Notification', notificationSchema);
