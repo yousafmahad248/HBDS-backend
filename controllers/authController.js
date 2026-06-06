@@ -93,6 +93,7 @@ exports.registerHospital = async (req, res) => {
         res.status(201).json({
             token: generateToken(hospital._id, 'hospital'),
             hospital: { id: hospital._id, hospitalName: hospital.hospitalName, email: hospital.email },
+            user: { id: hospital._id, email: hospital.email, name: hospital.hospitalName, role: 'hospital' },
             msg: 'Hospital registration successful'
         });
 
@@ -143,6 +144,7 @@ exports.login = async (req, res) => {
         res.json({
             token: generateToken(account._id, authRole),
             role: authRole,
+            user: { id: account._id, email: account.email, name: account.name || account.hospitalName, role: authRole },
             msg: 'Login successful'
         });
     } catch (error) {
